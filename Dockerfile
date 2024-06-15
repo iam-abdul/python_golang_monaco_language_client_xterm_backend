@@ -19,6 +19,12 @@ RUN apk add shadow util-linux
 
 RUN adduser -D minimumGuy
 
+# creating a group and adding the above user
+RUN groupadd min
+RUN usermod -a -G min minimumGuy
+RUN chgrp min /app
+RUN chmod g+rx /app
+
 
 
 RUN touch /home/minimumGuy/main.go
@@ -39,8 +45,15 @@ RUN npm install -g pm2
 RUN npm install
 RUN npx tsc
 
+
 # Expose port 80
 EXPOSE 80
 
+
+# RUN pm2 start dist/python-lsp.js
+# CMD ["pm2","start","/app/dist/python-lsp.js", "-c", "pm2", "logs"]
+CMD ["node", "/app/dist/python-lsp.js"]
 # Start the app
-CMD ["sh"]
+# CMD ["su", "minimumGuy", "-c", "pm2 start dist/python-lsp.js"]
+
+# CMD ["pm2", "start", "/app/dist/python-lsp.js"]

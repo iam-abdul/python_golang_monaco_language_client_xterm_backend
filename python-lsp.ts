@@ -159,7 +159,7 @@ app.put("/*", (req, res) => {
   const filePath = req.params[0];
   console.log(filePath);
   console.log("body", req.body.content);
-  fs.writeFileSync(path.join(watchDir, filePath), req.body.content);
+  fs.writeFileSync(filePath, req.body.content);
   res.status(200).json({ message: "File created" });
 });
 
@@ -364,16 +364,16 @@ httpServer.on(
           // Start the ping-pong mechanism
           let pingInterval: NodeJS.Timeout;
           pingInterval = setInterval(() => {
-            webSocket.ping(() => { });
+            webSocket.ping(() => {});
           }, 10000); // Send a ping every 10 seconds
 
           // Handle pong responses
-          webSocket.on('pong', () => {
-            console.log('Received pong from client');
+          webSocket.on("pong", () => {
+            console.log("Received pong from client");
           });
 
           // Handle close event
-          webSocket.on('close', () => {
+          webSocket.on("close", () => {
             clearInterval(pingInterval); // Stop sending pings when the connection is closed
           });
         });
